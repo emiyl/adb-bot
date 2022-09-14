@@ -149,10 +149,12 @@ module.exports = {
 
 		await interaction.reply({embeds: [embed]})
 	},
-	choices: groupList.map(x => {
-		return {
-			name: x.name,
-			value: x.key
-		}
-	})
+	choices: {
+		device: groupList.map(x => {
+			return {
+				name: x.name,
+				value: x.key
+			}
+		})
+	}
 }

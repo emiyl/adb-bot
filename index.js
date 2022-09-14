@@ -24,7 +24,12 @@ client.on('interactionCreate', async interaction => {
         const command = client.commands.get(interaction.commandName);
 
 		const focusedValue = interaction.options.getFocused();
-        let choices = command.choices;
+
+        let getInteractionName = interaction.options.data.filter(x => x.focused)
+        if (getInteractionName.length) getInteractionName = getInteractionName[0].name
+        else return
+
+        let choices = command.choices[getInteractionName];
         if (!choices) return
 
         const filtered = choices.filter(choice => {
