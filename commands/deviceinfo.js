@@ -151,8 +151,8 @@ module.exports = {
 	},
 	choices: groupList.map(x => {
 		return {
-			name: x.name || x.key,
-			value: x.key || x.name
+			name: x.name,
+			value: x.key
 		}
 	})
 }
