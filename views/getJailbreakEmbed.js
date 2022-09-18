@@ -1,7 +1,7 @@
 const {
     EmbedBuilder,
     ActionRowBuilder,
-    ButtonBuilder, ButtonStyle, Embed
+    ButtonBuilder, ButtonStyle
 } = require('discord.js')
 
 module.exports = function(jailbreak, guideFilter) {

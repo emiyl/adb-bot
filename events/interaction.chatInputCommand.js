@@ -1,3 +1,5 @@
+const { botManagerUsername } = require('../config.json')
+
 module.exports = function(interaction, client) {
     const command = client.commands.get(interaction.commandName)
     
@@ -7,6 +9,6 @@ module.exports = function(interaction, client) {
         command.execute(interaction)
     } catch (error) {
         console.error(error)
-        interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true })
+        interaction.reply({ content: `There was an error while executing this command! Please contact ${botManagerUsername}`, ephemeral: true })
     }
 }

@@ -1,7 +1,6 @@
 const {
     SlashCommandBuilder,
-    EmbedBuilder,
-    ButtonBuilder
+    EmbedBuilder
 } = require('discord.js')
 
 const appleDb = require('../appledb/main.json')

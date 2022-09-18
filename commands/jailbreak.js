@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js')
+const { SlashCommandBuilder } = require('discord.js')
 
 const appleDb = require('../appledb/main.json')
 const jailbreakList = appleDb.jailbreak.sort((a,b) => {

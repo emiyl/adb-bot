@@ -1,6 +1,4 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js')
-const hash = require('object-hash')
-const request = require('request')
 
 const appleDb = require('../appledb/main.json')
 const groupList = appleDb.group
@@ -74,30 +72,6 @@ module.exports = {
 			value: `${deviceMap.length} device${deviceMap.length > 1 ? 's' : ''}`,
 			inline: true
 		})
-
-		/*let signingStatus = 'Unknown'
-
-		request({
-			method: 'GET',
-			url: `https://api.ipsw.me/v4/ipsw/${firmware.version}`,
-			headers: {
-			  'Accept': 'application/json'
-			}}, function (error, response, body) {
-				if (response.statusCode != 200) return
-				body = JSON.parse(body)
-
-				const identifierList = [...new Set(firmware.deviceMap.map(x => deviceList.filter(y => y.key == x).map(x => x.identifier)).flat().flat())]
-
-				const filtered = body.filter(x => identifierList.includes(x.identifier))
-				console.log(filtered)
-			}
-		);
-
-		embed.addFields({
-			name: 'Signing status',
-			value: signingStatus,
-			inline: true
-		})*/
 
 		function adjustDate(date) {
 			const dateOffset = new Date().getTimezoneOffset() * 60 * 1000
