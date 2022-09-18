@@ -78,20 +78,14 @@ module.exports = {
 		const group = groupList.find(x => x.key == groupKey)
 		const firmware = firmwareList.find(x => x.key == firmwareKey)
 
-		if (!group) {
+		if (!group || !firmware) {
+            let errorMessage = []
+            if (!group) errorMessage.push(`Device \`${groupKey}\` not found`)
+            if (!firmware) errorMessage.push(`Firmware \`${firmwareKey}\` not found`)
 			let embed = new EmbedBuilder()
 				.setColor(0xdf3c4c)
 				.setTitle('Error')
-				.setDescription(`Device \`${groupKey}\` not found`)
-			interaction.reply({ embeds: [embed] })
-			return
-		}
-
-		if (!firmware) {
-			let embed = new EmbedBuilder()
-				.setColor(0xdf3c4c)
-				.setTitle('Error')
-				.setDescription(`Firmware \`${firmwareKey}\` not found`)
+				.setDescription(errorMessage.join('\n'))
 			interaction.reply({ embeds: [embed] })
 			return
 		}
