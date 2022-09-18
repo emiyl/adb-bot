@@ -75,18 +75,32 @@ module.exports = {
 	async execute(interaction) {
         const groupKey = interaction.options.getString('device')
         const firmwareKey = interaction.options.getString('version')
+
+		if (groupKey.length > 100) return require('../views/respondErrorEmbed')(interaction, [{
+            type: 'tooLong',
+            string: 'device'
+        }])
+		if (firmwareKey.length > 100) return require('../views/respondErrorEmbed')(interaction, [{
+            type: 'tooLong',
+            string: 'version'
+        }])
+
 		const group = groupList.find(x => x.key == groupKey)
 		const firmware = firmwareList.find(x => x.key == firmwareKey)
 
 		if (!group || !firmware) {
             let errorMessage = []
-            if (!group) errorMessage.push(`Device \`${groupKey}\` not found`)
-            if (!firmware) errorMessage.push(`Firmware \`${firmwareKey}\` not found`)
-			let embed = new EmbedBuilder()
-				.setColor(0xdf3c4c)
-				.setTitle('Error')
-				.setDescription(errorMessage.join('\n'))
-			interaction.reply({ embeds: [embed] })
+            if (!group) errorMessage.push({
+                type: 'notFound',
+                string: 'Device',
+                key: groupKey
+            })
+            if (!firmware) errorMessage.push({
+                type: 'notFound',
+                string: 'Firmware',
+                key: firmwareKey
+            })
+            require('../views/respondErrorEmbed')(interaction, errorMessage)
 			return
 		}
 

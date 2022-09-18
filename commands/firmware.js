@@ -30,12 +30,17 @@ module.exports = {
 		const key = interaction.options.getString('version')
 		const firmware = firmwareList.find(x => x.key == key)
 
+		if (key.length > 100) return require('../views/respondErrorEmbed')(interaction, [{
+			type: 'tooLong',
+			string: 'version'
+		}])
+
 		if (!firmware) {
-			let embed = new EmbedBuilder()
-				.setColor(0xdf3c4c)
-				.setTitle('Error')
-				.setDescription(`Firmware \`${key}\` not found`)
-			interaction.reply({ embeds: [embed] })
+			require('../views/respondErrorEmbed')(interaction, [{
+				type: 'notFound',
+				string: 'Firmware',
+				key: key
+			}])
 			return
 		}
 

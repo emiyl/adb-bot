@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js')
+const { SlashCommandBuilder } = require('discord.js')
 
 const appleDb = require('../appledb/main.json')
 const jailbreakList = appleDb.jailbreak.sort((a,b) => {
@@ -22,12 +22,17 @@ module.exports = {
 		const name = interaction.options.getString('name')
 		const jailbreak = jailbreakList.find(x => x.name == name)
 
+		if (name.length > 100) return require('../views/respondErrorEmbed')(interaction, [{
+			type: 'tooLong',
+			string: 'jailbreak'
+		}])
+
 		if (!jailbreak) {
-			let embed = new EmbedBuilder()
-				.setColor(0xdf3c4c)
-				.setTitle('Error')
-				.setDescription(`Jailbreak \`${name}\` not found`)
-			interaction.reply({ embeds: [embed] })
+			require('../views/respondErrorEmbed')(interaction, [{
+				type: 'notFound',
+				string: 'Jailbreak',
+				key: name
+			}])
 			return
 		}
 

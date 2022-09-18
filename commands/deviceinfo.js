@@ -19,15 +19,19 @@ module.exports = {
 		),
 	async execute(interaction) {
 		const key = interaction.options.getString('device')
-		const group = groupList.find(x => x.key == key)
 
+		if (key.length > 100) return require('../views/respondErrorEmbed')(interaction, [{
+			type: 'tooLong',
+			string: 'device'
+		}])
+
+		const group = groupList.find(x => x.key == key)
 		if (!group) {
-			let embed = new EmbedBuilder()
-				.setColor(0xdf3c4c)
-				.setTitle('Error')
-				.setDescription(`Device \`${key}\` not found`)
-			interaction.reply({ embeds: [embed] })
-			return
+			return require('../views/respondErrorEmbed')(interaction, [{
+				type: 'notFound',
+				string: 'Device',
+				key: key
+			}])
 		}
 
 		let embed = new EmbedBuilder()
