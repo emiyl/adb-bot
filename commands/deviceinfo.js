@@ -68,7 +68,7 @@ module.exports = {
 			inline: false
 		})
 		if (showIdentifiers) {
-			const identList = removeDuplicatesFromArray(productList.map(x => x.identifierString.split(', ')).flat())
+			const identList = removeDuplicatesFromArray(productList.map(x => x.identifierString.split(', ')).flat()).sort()
 			embed.addFields({
 				name: `Identifier${identList.length > 1 ? 's' : ''}`,
 				value: '`' + identList.join('`\n`') + '`',
@@ -76,14 +76,16 @@ module.exports = {
 			})
 		}
 
-		const modelList = removeDuplicatesFromArray(devicesInGroup.map(x => x.model).flat())
+		function getProperty(property) { return removeDuplicatesFromArray(devicesInGroup.map(x => x[property]).flat()).sort() }
+
+		const modelList = getProperty('model')
 		if (modelList.length) embed.addFields({
 			name: `Model${modelList.length > 1 ? 's' : ''}`,
 			value: modelList.join(', '),
 			inline: true
 		})
 
-		const boardList = removeDuplicatesFromArray(devicesInGroup.map(x => x.board).flat())
+		const boardList = getProperty('board')
 		if (boardList.length) embed.addFields({
 			name: `Board${boardList.length > 1 ? 's' : ''}`,
 			value: boardList.join(', '),
