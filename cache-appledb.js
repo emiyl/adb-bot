@@ -20,15 +20,17 @@ if (newHash) {
     }
 }
 
-if (downloadDb) https.get(url,(res) => {
-    const path = './appledb/main.json'; 
-    const filePath = fs.createWriteStream(path);
-    res.pipe(filePath);
-    filePath.on('finish',() => {
-        filePath.close();
-        console.log('Downloaded latest database'); 
+if (downloadDb) {
+    console.log('Downloading latest database...')
+    https.get(url,(res) => {
+        const path = './appledb/main.json'; 
+        const filePath = fs.createWriteStream(path);
+        res.pipe(filePath);
+        filePath.on('finish',() => {
+            filePath.close();
+            console.log('Done'); 
+        })
     })
-})
-else {
+} else {
     console.log('Database is already up to date')
 }
