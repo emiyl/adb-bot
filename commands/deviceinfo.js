@@ -21,6 +21,15 @@ module.exports = {
 		const key = interaction.options.getString('device')
 		const group = groupList.find(x => x.key == key)
 
+		if (!group) {
+			let embed = new EmbedBuilder()
+				.setColor(0xdf3c4c)
+				.setTitle('Error')
+				.setDescription(`Device \`${key}\` not found`)
+			interaction.reply({ embeds: [embed] })
+			return
+		}
+
 		let embed = new EmbedBuilder()
 			.setColor(0x0099FF)
 			.setTitle(group.name)

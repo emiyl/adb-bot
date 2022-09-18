@@ -32,8 +32,7 @@ const jailbreakList = appleDb.jailbreak.map(x => {
 })
 
 const firmwareList = appleDb.ios
-.filter(x => !x.beta && x.build)
-.filter(x => [
+.filter(x => x.build && [
     'iOS',
     'iPadOS',
     'iPhoneOS',
@@ -74,8 +73,28 @@ module.exports = {
 				.setAutocomplete(true)
 		),
 	async execute(interaction) {
-		const group = groupList.find(x => x.key == interaction.options.getString('device'))
-		const firmware = firmwareList.find(x => x.key == interaction.options.getString('version'))
+        const groupKey = interaction.options.getString('device')
+        const firmwareKey = interaction.options.getString('version')
+		const group = groupList.find(x => x.key == groupKey)
+		const firmware = firmwareList.find(x => x.key == firmwareKey)
+
+		if (!group) {
+			let embed = new EmbedBuilder()
+				.setColor(0xdf3c4c)
+				.setTitle('Error')
+				.setDescription(`Device \`${groupKey}\` not found`)
+			interaction.reply({ embeds: [embed] })
+			return
+		}
+
+		if (!firmware) {
+			let embed = new EmbedBuilder()
+				.setColor(0xdf3c4c)
+				.setTitle('Error')
+				.setDescription(`Firmware \`${firmwareKey}\` not found`)
+			interaction.reply({ embeds: [embed] })
+			return
+		}
 
         const identifierList = group.devices.map(x => deviceList.find(y => y.key == x)).map(x => x.identifier).flat()
         const build = firmware.build

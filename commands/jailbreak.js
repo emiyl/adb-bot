@@ -22,6 +22,15 @@ module.exports = {
 		const name = interaction.options.getString('name')
 		const jailbreak = jailbreakList.find(x => x.name == name)
 
+		if (!jailbreak) {
+			let embed = new EmbedBuilder()
+				.setColor(0xdf3c4c)
+				.setTitle('Error')
+				.setDescription(`Jailbreak \`${name}\` not found`)
+			interaction.reply({ embeds: [embed] })
+			return
+		}
+
 		const jailbreakResponse = require('../views/getJailbreakEmbed')(jailbreak)
 
 		embed = jailbreakResponse.embed

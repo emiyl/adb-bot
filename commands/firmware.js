@@ -30,6 +30,15 @@ module.exports = {
 		const key = interaction.options.getString('version')
 		const firmware = firmwareList.find(x => x.key == key)
 
+		if (!firmware) {
+			let embed = new EmbedBuilder()
+				.setColor(0xdf3c4c)
+				.setTitle('Error')
+				.setDescription(`Firmware \`${key}\` not found`)
+			interaction.reply({ embeds: [embed] })
+			return
+		}
+
 		let embed = new EmbedBuilder()
 			.setColor(0x0099FF)
 			.setTitle([firmware.osStr, firmware.version].filter(y => y).join(' '))
