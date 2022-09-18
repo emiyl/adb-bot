@@ -76,14 +76,17 @@ module.exports = {
         const groupKey = interaction.options.getString('device')
         const firmwareKey = interaction.options.getString('version')
 
-		if (groupKey.length > 100) return require('../views/respondErrorEmbed')(interaction, [{
-            type: 'tooLong',
-            string: 'device'
-        }])
-		if (firmwareKey.length > 100) return require('../views/respondErrorEmbed')(interaction, [{
-            type: 'tooLong',
-            string: 'version'
-        }])
+		if (groupKey.length > 100 || firmwareKey.length > 100) {
+            let errArr = []
+            if (groupKey.length > 100) errArr.push('device')
+            if (firmwareKey.length > 100) errArr.push('version')
+            return require('../views/respondErrorEmbed')(interaction, errArr.map(x => {
+                return {
+                    type: 'tooLong',
+                    string: x
+                }
+            }))
+        }
 
 		const group = groupList.find(x => x.key == groupKey)
 		const firmware = firmwareList.find(x => x.key == firmwareKey)
