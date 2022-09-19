@@ -1,4 +1,9 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js')
+const {
+	SlashCommandBuilder,
+	EmbedBuilder,
+    ActionRowBuilder,
+    ButtonBuilder, ButtonStyle
+ } = require('discord.js')
 const hash = require('object-hash')
 
 const appleDb = require('../appledb/main.json')
@@ -37,7 +42,6 @@ module.exports = {
 		let embed = new EmbedBuilder()
 			.setColor(0x0099FF)
 			.setTitle(group.name)
-			.setURL(`https://appledb.dev/device/${group.key.replace(/ /g,'-')}`)
 			.setThumbnail(encodeURI(`https://img.appledb.dev/device@128/${group.devices[0]}/0.webp`))
 
 		const devicesInGroup = deviceList.filter(x => group.devices.includes(x.key))
@@ -162,7 +166,15 @@ module.exports = {
 			text: `Releas${(new Date(released[0]) < new Date()) ? 'ed' : 'ing'} on ${formatDate(released[0])}`
 		});
 
-		await interaction.reply({embeds: [embed]})
+		let buttonRow = new ActionRowBuilder()
+		.addComponents(
+            new ButtonBuilder()
+                .setLabel('View more on AppleDB')
+                .setStyle(ButtonStyle.Link)
+				.setURL(`https://appledb.dev/device/${group.key.replace(/ /g,'-')}`)
+		)
+
+		await interaction.reply({embeds: [embed], components: [buttonRow]})
 	},
 	choices: {
 		device: groupList.map(x => {

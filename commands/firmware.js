@@ -1,4 +1,9 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js')
+const {
+	SlashCommandBuilder,
+	EmbedBuilder,
+    ActionRowBuilder,
+    ButtonBuilder, ButtonStyle
+ } = require('discord.js')
 
 const appleDb = require('../appledb/main.json')
 const groupList = appleDb.group
@@ -47,7 +52,6 @@ module.exports = {
 		let embed = new EmbedBuilder()
 			.setColor(0x0099FF)
 			.setTitle([firmware.osStr, firmware.version].filter(y => y).join(' '))
-			.setURL(firmware.appledburl)
 
 		if (firmware.build) embed.addFields({
 			name: 'Build number',
@@ -103,7 +107,15 @@ module.exports = {
 			text: `Releas${(new Date(firmware.released) < new Date()) ? 'ed' : 'ing'} on ${formatDate(firmware.released)}`
 		});
 
-		await interaction.reply({embeds: [embed]})
+		let buttonRow = new ActionRowBuilder()
+		.addComponents(
+            new ButtonBuilder()
+                .setLabel('View more on AppleDB')
+                .setStyle(ButtonStyle.Link)
+				.setURL(firmware.appledburl)
+		)
+
+		await interaction.reply({embeds: [embed], components: [buttonRow]})
 	},
 	choices: {
 		version: firmwareList.map(x => {
